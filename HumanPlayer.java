@@ -4,6 +4,7 @@ public class HumanPlayer implements Player {
 
     public HumanPlayer() {}
 
+    @Override
     public void playTurn (Board board, Mark mark) {
         System.out.println("Player " +mark + ", type coordinates: ");
         while (true) {

@@ -13,46 +13,65 @@ public class Tournament {
     }
 
     public void playTournament (int size, int winStreak, String playerName1, String playerName2) {
-        int player1Wins = 0;
-        int player2Wins = 0;
+        Player[] players = {this.player1, this.player2};
+        int[] wins = {0, 0};
         int ties = 0;
         for (int i = 0; i < this.rounds; i++) {
-            Game game;
-            if (i % 2 == 0) {
-                game = new Game(this.player1, this.player2, size, winStreak, this.renderer);
-            }
-            else {
-                game = new Game(this.player2, this.player1, size, winStreak, this.renderer);
-            }
+            Game game = new Game(players[i % 2], players[(i + 1) % 2], size, winStreak, this.renderer);
             Mark mark = game.run();
             if (mark == Mark.BLANK) {
                 ties++;
             }
             else if (mark == Mark.X) {
-                if (i % 2 == 0) {
-                    player1Wins++;
-                }
-                else {
-                    player2Wins++;
-                }
+                    wins[i % 2]++;
             }
             else {
-                if (i % 2 == 0) {
-                    player2Wins++;
-                }
-                else {
-                    player1Wins++;
-                }
+                wins[(i + 1) % 2]++;
             }
         }
         System.out.println("######### Results #########");
-        System.out.println("Player 1, " +playerName1 + " won: " +player1Wins + " rounds");
-        System.out.println("Player 2, " +playerName2 + " won: " +player2Wins + " rounds");
+        System.out.println("Player 1, " +playerName1 + " won: " +wins[0] + " rounds");
+        System.out.println("Player 2, " +playerName2 + " won: " +wins[1] + " rounds");
         System.out.println("Ties: " + ties);
     }
 
     public static void main (String[] args) {
-
+        int rounds = Integer.parseInt(args[0]);
+        int size = Integer.parseInt((args[1]));
+        int winStreak = Integer.parseInt(args[2]);
+        Renderer renderer;
+        if (args[3].equalsIgnoreCase("console")) {
+            renderer = new ConsoleRenderer(size);
+        } else {
+            renderer = new VoidRenderer();
+        }
+        Player player1 = new HumanPlayer();
+        Player player2 = new HumanPlayer();
+        if (args[4].equalsIgnoreCase("human")) {
+            player1 = new HumanPlayer();
+        }
+        else if (args[4].equalsIgnoreCase("whatever")) {
+            player1 = new WhateverPlayer();
+        }
+        else if (args[4].equalsIgnoreCase("clever")) {
+            player1 = new CleverPlayer();
+        }
+        else if (args[4].equalsIgnoreCase("genius")) {
+            player1 = new GeniusPlayer();
+        }
+        if (args[5].equalsIgnoreCase("human")) {
+            player2 = new HumanPlayer();
+        }
+        else if (args[5].equalsIgnoreCase("whatever")) {
+            player2 = new WhateverPlayer();
+        }
+        else if (args[5].equalsIgnoreCase("clever")) {
+            player2 = new CleverPlayer();
+        }
+        else if (args[5].equalsIgnoreCase("genius")) {
+            player2 = new GeniusPlayer();
+        }
+        Tournament tournament = new Tournament(rounds, renderer, player1, player2);
+        tournament.playTournament(size, winStreak, args[4], args[5]);
     }
-
 }
