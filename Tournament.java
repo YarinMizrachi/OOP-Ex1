@@ -39,38 +39,9 @@ public class Tournament {
         int rounds = Integer.parseInt(args[0]);
         int size = Integer.parseInt((args[1]));
         int winStreak = Integer.parseInt(args[2]);
-        Renderer renderer;
-        if (args[3].equalsIgnoreCase("console")) {
-            renderer = new ConsoleRenderer(size);
-        } else {
-            renderer = new VoidRenderer();
-        }
-        Player player1 = new HumanPlayer();
-        Player player2 = new HumanPlayer();
-        if (args[4].equalsIgnoreCase("human")) {
-            player1 = new HumanPlayer();
-        }
-        else if (args[4].equalsIgnoreCase("whatever")) {
-            player1 = new WhateverPlayer();
-        }
-        else if (args[4].equalsIgnoreCase("clever")) {
-            player1 = new CleverPlayer();
-        }
-        else if (args[4].equalsIgnoreCase("genius")) {
-            player1 = new GeniusPlayer();
-        }
-        if (args[5].equalsIgnoreCase("human")) {
-            player2 = new HumanPlayer();
-        }
-        else if (args[5].equalsIgnoreCase("whatever")) {
-            player2 = new WhateverPlayer();
-        }
-        else if (args[5].equalsIgnoreCase("clever")) {
-            player2 = new CleverPlayer();
-        }
-        else if (args[5].equalsIgnoreCase("genius")) {
-            player2 = new GeniusPlayer();
-        }
+        Renderer renderer = new RendererFactory().buildRenderer(args[3], size);
+        Player player1 = new PlayerFactory().buildPlayer(args[4]);
+        Player player2 = new PlayerFactory().buildPlayer(args[5]);
         Tournament tournament = new Tournament(rounds, renderer, player1, player2);
         tournament.playTournament(size, winStreak, args[4], args[5]);
     }
