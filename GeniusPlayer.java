@@ -2,7 +2,6 @@ public class GeniusPlayer implements Player{
     private static final int FIRST_ROW = 0;
     private static final int FIRST_COLUMN = 0;
     private static final int SECOND_COLUMN = 1;
-    private static final int WIN_STREAK = 3;
     private static final int WIN_NEXT_STEP = 2;
 
     public GeniusPlayer () {}
