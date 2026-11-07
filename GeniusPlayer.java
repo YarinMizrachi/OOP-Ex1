@@ -1,11 +1,30 @@
+/**
+ * Represents an advanced strategy player that prioritizes securing immediate wins
+ * and blocking opponent victories.
+ * Analyzes cells with state {@link Mark#BLANK} on a game board
+ * (such as the default 4x4 dimensions) to detect streaks of at least 2 matching marks,
+ * falling back to a structured column placement if no critical move is available.
+ */
 public class GeniusPlayer implements Player{
     private static final int FIRST_ROW = 0;
     private static final int FIRST_COLUMN = 0;
     private static final int SECOND_COLUMN = 1;
     private static final int WIN_NEXT_STEP = 2;
 
+    /**
+     * Constructs a new {@code GeniusPlayer} instance ready to play on a board (e.g., default 4x4 dimensions).
+     */
     public GeniusPlayer () {}
 
+    /**
+     * Executes a turn using a prioritized tactical strategy.
+     * Checks all {@link Mark#BLANK} cells for an immediate win (2 adjacent matching marks),
+     * then checks to block an opponent win,
+     * and otherwise falls back to scanning columns from index 1 before attempting column 0.
+     *
+     * @param board the {@link Board} on which the turn is executed, with dimensions such as the default 4x4
+     * @param mark the {@link Mark} (such as {@link Mark#X} or {@link Mark#O}) assigned to this player
+     */
     @Override
     public void playTurn (Board board, Mark mark) {
         int size = board.getSize();
@@ -43,7 +62,8 @@ public class GeniusPlayer implements Player{
         }
     }
 
-    private int countMarkInDirection (Board board, int row, int col, int rowChange, int colChange, Mark mark) {
+    private int countMarkInDirection (Board board, int row, int col,
+                                      int rowChange, int colChange, Mark mark) {
         int count = 0;
         int currentRow = row + rowChange;
         int currentCol = col + colChange;

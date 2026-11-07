@@ -1,3 +1,9 @@
+/**
+ * Manages the execution and rules of a Tic-Tac-Toe game session between two players using a given renderer.
+ * Handles alternating turns between {@link Mark#X} and {@link Mark#O}, board setup
+ * (such as default 4x4 dimensions), win streak checks (defaulting to 3),
+ * and tie checks when no cells remain {@link Mark#BLANK}.
+ */
 public class Game {
     private static final int DEFAULT_WIN_STREAK = 3;
     private static final int EVEN = 2;
@@ -7,6 +13,13 @@ public class Game {
     private int winStreak = DEFAULT_WIN_STREAK;
     private Renderer renderer;
 
+    /**
+     * Constructs a new {@code Game} instance using default 4x4 board dimensions and default win streak of 3.
+     *
+     * @param playerX the player assigned to {@link Mark#X}
+     * @param playerO the player assigned to {@link Mark#O}
+     * @param renderer the {@link Renderer} used to display the board state
+     */
     public Game (Player playerX, Player playerO, Renderer renderer) {
         this.playerX = playerX;
         this.playerO = playerO;
@@ -14,6 +27,15 @@ public class Game {
         this.board = new Board ();
     }
 
+    /**
+     * Constructs a new {@code Game} instance with specified custom board dimensions and win streak length.
+     *
+     * @param playerX the player assigned to {@link Mark#X}
+     * @param playerO the player assigned to {@link Mark#O}
+     * @param size the dimension (width and height) of the square game board
+     * @param winStreak the number of consecutive identical marks required to win
+     * @param renderer the {@link Renderer} used to display the board state
+     */
     public Game (Player playerX, Player playerO, int size, int winStreak, Renderer renderer) {
         this.playerX = playerX;
         this.playerO = playerO;
@@ -22,14 +44,33 @@ public class Game {
         this.renderer = renderer;
     }
 
+    /**
+     * Returns the required number of consecutive marks needed to achieve a victory.
+     *
+     * @return the win streak target value (such as the default 3)
+     */
     public int getWinStreak () {
         return this.winStreak;
     }
 
+    /**
+     * Returns the side length dimension of the game board.
+     *
+     * @return the board size (such as the default 4 for a 4x4 grid)
+     */
     public int getBoardSize () {
         return this.board.getSize();
     }
 
+    /**
+     * Runs the main game loop, rendering the board and alternating turns between
+     * {@link Mark#X} and {@link Mark#O} until a player wins or a tie occurs.
+     * Evaluates win conditions after each turn and checks for a tie
+     * when all board positions are filled without any remaining {@link Mark#BLANK} cells.
+     *
+     * @return the winning player's {@link Mark} (either {@link Mark#X} or {@link Mark#O}),
+     * or {@link Mark#BLANK} if the game ends in a tie
+     */
     public Mark run () {
         int counter = 0;
         renderer.renderBoard(this.board);
